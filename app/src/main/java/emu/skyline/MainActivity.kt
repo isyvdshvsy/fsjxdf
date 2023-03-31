@@ -103,6 +103,40 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
+        
+    
+
+        val keysDir = getDir("keys", MODE_PRIVATE)
+
+        if (!keysDir.exists()) {
+
+            keysDir.mkdir()
+
+     
+
+   
+
+            val inputStream = assets.open("prod.keys")
+
+            val outputStream = FileOutputStream(File(keysDir, "prod.keys"))
+
+            val buffer = ByteArray(1024)
+
+            var length: Int
+
+            while (inputStream.read(buffer).also { length = it } > 0) {
+
+                outputStream.write(buffer, 0, length)
+
+            }
+
+            outputStream.close()
+
+            inputStream.close()
+
+        }
+
+   
 
         adapter.apply {
             setHeaderItems(listOf(HeaderRomFilterItem(formatOrder, if (settings.filter == 0) null else formatOrder[settings.filter - 1]) { romFormat ->
